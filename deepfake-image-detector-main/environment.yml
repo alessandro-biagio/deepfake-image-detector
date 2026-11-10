@@ -1,0 +1,32 @@
+# =============================================================================
+# Ambiente conda per la VM universitaria (GPU NVIDIA T4, CUDA 12.1)
+# Uso:
+#   conda env create -f environment.yml
+#   conda activate genimage
+#
+# In locale (solo CPU) si puo' usare requirements.txt in un venv invece di conda.
+# =============================================================================
+name: genimage
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pytorch>=2.2
+  - torchvision>=0.17
+  - pytorch-cuda=12.1        # rimuovere questa riga per un ambiente CPU-only
+  - numpy>=1.26
+  - pandas>=2.1
+  - scikit-learn>=1.4
+  - pillow>=10.2
+  - matplotlib>=3.8
+  - seaborn>=0.13
+  - tqdm>=4.66
+  - pyyaml>=6.0
+  - tensorboard>=2.16
+  - pytest>=8.0
+  - pip
+  - pip:
+      - timm>=1.0.3
+      - optuna>=3.6

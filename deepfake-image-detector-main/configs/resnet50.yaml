@@ -1,0 +1,38 @@
+# =============================================================================
+# ResNet-50 pretrained ImageNet per confronto con la CNN custom.
+# Usa gli stessi split della baseline; cambiare train/val/test_csv per i fold
+# cross-generator 7-vs-1.
+# =============================================================================
+
+experiment:
+  name: resnet50_baseline_misto
+  seed: 42
+
+model:
+  name: resnet50
+  num_classes: 2
+  pretrained: true
+  dropout: 0.2
+  # true = allena solo la testa finale; false = fine-tuning completo
+  freeze_backbone: false
+  backbone_lr_mult: 0.1
+
+data:
+  train_csv: splits/baseline_misto/train.csv
+  val_csv: splits/baseline_misto/val.csv
+  test_csv: splits/baseline_misto/test_in_distribution.csv
+  image_size: 224
+  num_workers: 8
+  mean: [0.485, 0.456, 0.406]
+  std: [0.229, 0.224, 0.225]
+
+train:
+  epochs: 20
+  batch_size: 32
+  lr: 0.0001
+  weight_decay: 0.0001
+  optimizer: adamw
+  scheduler: cosine
+  amp: true
+  early_stopping_patience: 5
+  monitor: val_f1

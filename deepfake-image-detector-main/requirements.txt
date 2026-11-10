@@ -1,0 +1,37 @@
+# =============================================================================
+# Dipendenze del progetto GenImage AI Image Detector
+# =============================================================================
+# NOTA su PyTorch:
+#   - In LOCALE (sviluppo/smoke test su CPU) va bene la build CPU di default:
+#       pip install -r requirements.txt
+#   - Sulla VM (GPU T4, CUDA) installare PyTorch dalla wheel CUDA PRIMA del resto, es.:
+#       pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+#       pip install -r requirements.txt
+#     oppure usare environment.yml (conda) con pytorch-cuda.
+# =============================================================================
+
+# --- Core deep learning ---
+torch>=2.2
+torchvision>=0.17
+timm>=1.0.3            # ResNet/EfficientNet/Swin/ConvNeXt/ViT pretrained
+
+# --- Dati e metriche ---
+numpy>=1.26
+pandas>=2.1
+scikit-learn>=1.4     # accuracy/precision/recall/F1/ROC-AUC/confusion matrix
+Pillow>=10.2          # I/O immagini + degradazioni (JPEG, resize)
+
+# --- Ottimizzazione iperparametri ---
+optuna>=3.6
+
+# --- Logging / tracking / visualizzazione ---
+tensorboard>=2.16
+matplotlib>=3.8
+seaborn>=0.13         # heatmap cross-generator e confusion matrix
+tqdm>=4.66
+
+# --- Config e utility ---
+PyYAML>=6.0
+
+# --- Test ---
+pytest>=8.0

@@ -1,0 +1,43 @@
+# =============================================================================
+# Config di esempio (template dello schema letto da src/utils.load_config).
+# Ogni esperimento = una copia di questo file con valori diversi.
+# I percorsi dati sono RELATIVI a --data-root (passato da riga di comando),
+# cosi' lo stesso config punta a tests/fixtures in locale e a data/ sulla VM.
+# =============================================================================
+
+experiment:
+  name: cnn_crossgen_7gen_test_wukong        # usato per la cartella in experiments/
+  seed: 42
+
+model:
+  name: cnn_custom                 # cnn_custom | resnet50 | efficientnet_b0 | swin_tiny
+  num_classes: 2                   # [nature=0, ai=1]
+  pretrained: false                # ignorato dalla cnn_custom; true per i modelli timm
+  dropout: 0.3
+  dropout_head: 0.4
+  hidden_dim: 128
+  # fine-tuning (usato dai modelli pretrained, ignorato dalla cnn_custom):
+  freeze_backbone: false
+  backbone_lr_mult: 0.1            # lr backbone = lr * questo fattore
+
+data:
+  # CSV degli split generati da scripts/build_splits.py (relativi a --data-root)
+  train_csv: splits/crossgen_7gen_test_wukong/train.csv
+  val_csv: splits/crossgen_7gen_test_wukong/val.csv
+  test_csv: splits/crossgen_7gen_test_wukong/test_in_distribution.csv
+  image_size: 224
+  num_workers: 8                   # 8-16 sulla VM (32 CPU); ridurre in locale
+  # statistiche di normalizzazione ImageNet (default per i modelli pretrained)
+  mean: [0.485, 0.456, 0.406]
+  std: [0.229, 0.224, 0.225]
+
+train:
+  epochs: 20
+  batch_size: 128                  # ridurre per i modelli pesanti / VRAM limitata
+  lr: 0.001
+  weight_decay: 0.0001
+  optimizer: adamw                 # adamw | sgd
+  scheduler: cosine                # cosine | none
+  amp: true                        # mixed precision (richiede CUDA; no-op su CPU)
+  early_stopping_patience: 5       # epoche senza miglioramento prima di fermarsi
+  monitor: val_f1                  # metrica monitorata per best checkpoint
